@@ -1,0 +1,24 @@
+Route301
+========
+
+A simple Rack middleware to allow mapping old paths to new websites.  Based partially on Rack::ReWrite.
+
+
+Example
+=======
+
+example initializer for Rails App
+
+ActionController::Dispatcher.middleware.use 'Route301', {:routes => [
+  {:when => '/motels.aspx', :send_to => '/motels'},
+	{:when => /motels\.aspx.*/, :send_to => proc{|env| motels_path(env)} }
+]}
+
+def motels_path(env)
+  puts env['QUERY_STRING']
+  params = Hash[env['QUERY_STRING'].split('&').map{|kvp| kvp.split('=')}]
+  return "/motels/#{Motel.find_by_archive_id(params['q'].to_i)}"
+end
+
+
+Copyright (c) 2009 [Matt Overstreet], released under the MIT license

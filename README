@@ -3,11 +3,19 @@ Route301
 
 A simple Rack middleware to allow mapping old paths to new websites.  Based partially on Rack::ReWrite.
 
+When setting up routes:
 
+ :when should be a string or regular expression that matches the route you want to work with.
+
+ :send_to should be a string (or a proc, see the example) where you want to permanently redirect traffic
+
+See the example below for a simple string match and a regex match using a proc.  Your proc will receive a copy
+of the server environment variables, and has full access to ActiveRecord for doing complex name resolution.
+ 
 Example
 =======
 
-example initializer for Rails App
+example initializer for Rails App, you could add this as config/initializers/route301.rb
 
 ActionController::Dispatcher.middleware.use 'Route301', {:routes => [
   {:when => '/motels.aspx', :send_to => '/motels'},
@@ -21,4 +29,4 @@ def motels_path(env)
 end
 
 
-Copyright (c) 2009 [Matt Overstreet], released under the MIT license
+Copyright (c) 2010 [Matt Overstreet], released under the MIT license

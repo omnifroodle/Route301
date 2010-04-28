@@ -61,7 +61,7 @@ Some less common things to do
 ----------------
 * catch requests for missing images and create stubs for them during testing
 * catch "broken" url's from the dreaded email newline and write a proc to recover based on the first half of the url
-* set up honey-pots to catch people probing your server using a proc to notify you
+* set up honey-pots to catch people probing your server, and log it send a notification
 
 Suggestions, questions, and comments please! @omnifroodle
 

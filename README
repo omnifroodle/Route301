@@ -3,7 +3,29 @@ Route301
 
 A simple Rack middleware to allow mapping old paths to new websites.  Based partially on Rack::ReWrite.
 
+The goals
+---------------
+* Catch lost links (usually established in an older incarnation of your website...)
+* Preserve SEO by clearly communicating resource moves
+* Freedom from URI shattering behaviors like ending paths in .php or .aspx which have nothing to do with the content
+* Be simple
+* Be flexible
+
+Why not something like mod_rewrite
+----------------
+* don't do the work until it needs to be done (R301 only runs after your app gives up)
+* returning the right content on a bad url only extends the confusion and wasted overhead
+* returning the right content on a bad url (as well as a good one) might make your site look worse to search engines
+* Google actually might respect 301's and you get to keep all your previous mojo
+* because this makes sense for your problem
+
+Why not this
+----------------
+* because you'd rather just do an after_filter in Rails
+* because this doesn't fit your problem (like temporary redirects you'd like to fire before your app runs)
+
 When setting up routes:
+----------------
 
  :when should be a string or regular expression that matches the route you want to work with.
 
@@ -28,5 +50,19 @@ def motels_path(env)
   return "/motels/#{Motel.find_by_archive_id(params['q'].to_i)}"
 end
 
+
+Some Common things to do
+-----------------
+* store the old "?q=" id in your database and send people to your new pretty urls
+* catch old static routes like "mystuff.asp" and send it to "mystuff"
+* handle deprecated routes
+
+Some less common things to do
+----------------
+* catch requests for missing images and create stubs for them during testing
+* catch "broken" url's from the dreaded email newline and write a proc to recover based on the first half of the url
+* set up honey-pots to catch people probing your server using a proc to notify you
+
+Suggestions, questions, and comments please! @omnifroodle
 
 Copyright (c) 2010 [Matt Overstreet], released under the MIT license
